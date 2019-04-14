@@ -21,6 +21,7 @@ const userRoutes = require('./routes/userRoutes');
 
 //* Defining API routes
 app.use('/api/user', userRoutes)
+app.use('/', (req, res) => res.send("Welcome to my test API"))
 
 //* Set Errors object to collect errors
 app.use((req, res, next) => {
