@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const cors = require('cors')
+const cors = require('cors');
+const path = require('path');
 const { PORT, MONGO_URI } = require('./config/keys');
 const app = express();
 
@@ -28,6 +29,8 @@ app.use((req, res, next) => {
   req.errors = {};
   next();
 })
+
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 //* DB Connection and Server initialization 
 mongoose
