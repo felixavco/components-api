@@ -1,0 +1,38 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const cors = require('cors')
+const { PORT, MONGO_URI } = require('./config/keys');
+const app = express();
+
+app.use(cors());
+
+//** BodyParser Middleware **/
+//* parse application/x-www-form-urlencoded
+app.use(express.urlencoded({extended: false}));
+//* parse application/json
+app.use(express.json());
+
+//* Passport Middleware
+app.use(passport.initialize());
+
+//* Importing API routes
+const userRoutes = require('./routes/userRoutes');
+
+//* Defining API routes
+app.use('/api/user', userRoutes)
+
+//* Set Errors object to collect errors
+app.use((req, res, next) => {
+  req.errors = {};
+  next();
+})
+
+//* DB Connection and Server initialization 
+mongoose
+	.connect(MONGO_URI, { useNewUrlParser: true })
+	.then(() => {
+		console.log('Connected to DB');
+		app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+	})
+	.catch((error) => console.error(error));
