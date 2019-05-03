@@ -14,5 +14,7 @@ const { SendMailController } = require('../controllers/adminController');
  * @access Public
  * @description Receives message from a contact form and sends an email 
  */
-router.post('/send-mail', messageVal, SendMailController)
+router.post('/send-mail', messageVal, SendMailController);
+
+module.exports = router;
 

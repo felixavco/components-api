@@ -12,15 +12,23 @@ const sendMail = (data) => {
 		}
 	});
 
+	const template = `
+		<h4>${data.name} "${data.email}" </h4>
+		<p>${data.message}</p>
+	`
+	
+
 	const email = {
 		from: `${data.name} <${data.email}>`,
-		to: 'felixavco@gmail.com, hey@felixavelar.com',
+		to: 'hey@felixavelar.com',
+		bcc: 'felixavco@gmail.com',
+		replyTo: data.email,
 		subject: `[Contact Form] ${data.subject}`,
 		text: data.message,
-		html: `<p>${data.message}</p>`
+		html: template
 	};
 
 	return transporter.sendMail(email);
 };
 
-export default sendMail;
+module.exports = sendMail;

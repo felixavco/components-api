@@ -34,9 +34,9 @@ module.exports = (req, res, next) => {
   
      //* message Validation
 	if (Validator.isEmpty(message)) {
-		errors.message = 'Subject is required';
+		errors.message = 'Message is required';
 	} else if (!Validator.isLength(message, { min: 25, max: 500 })) {
-		errors.message = 'Name must have between 25 and 500 characters';
+		errors.message = 'Message must have between 25 and 500 characters';
 	}
 
 	if (!isEmpty(errors)) {
