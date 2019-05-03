@@ -55,19 +55,18 @@ exports.RegisterController = async (req, res) => {
  * @description Checks if email address is already in use
  */
 exports.CheckEmailController = async (req, res) => {
-  const { errors } = req;
+	const { errors } = req;
 
-  try {
-    const user = await User.findOne({ email: req.body.email });
+	try {
+		const user = await User.findOne({ email: req.body.email });
 
-    if (user) {
+		if (user) {
 			errors.email = 'Email is already in use, choose a different one!';
 			throw errors;
-    }
-    
-    res.status(200).json({message: "Email is correct and available"});
+		}
 
-  } catch (error) {
-    res.status(401).json(error);
-  }
-}
+		res.status(200).json({ message: 'Email is correct and available' });
+	} catch (error) {
+		res.status(401).json(error);
+	}
+};

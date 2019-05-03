@@ -10,7 +10,7 @@ app.use(cors());
 
 //** BodyParser Middleware **/
 //* parse application/x-www-form-urlencoded
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 //* parse application/json
 app.use(express.json());
 
@@ -19,20 +19,22 @@ app.use(passport.initialize());
 
 //* Importing API routes
 const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 //* Defining API routes
-app.use('/api/user', userRoutes)
-app.use('/', (req, res) => res.send("Welcome to my test API"))
+app.use('/api/user', userRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/', (req, res) => res.send('Welcome to my test API'));
 
 //* Set Errors object to collect errors
 app.use((req, res, next) => {
-  req.errors = {};
-  next();
-})
+	req.errors = {};
+	next();
+});
 
-app.use('/public', express.static(path.join(__dirname, 'public')))
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
-//* DB Connection and Server initialization 
+//* DB Connection and Server initialization
 mongoose
 	.connect(MONGO_URI, { useNewUrlParser: true })
 	.then(() => {
