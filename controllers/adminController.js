@@ -1,4 +1,4 @@
-const sendMail = require('../mailer/sendMail');
+const Mailer = require('../mailer/sendMail');
 
 /**
  * @route /api/admin/send-mail
@@ -6,31 +6,27 @@ const sendMail = require('../mailer/sendMail');
  * @access Public
  * @description Receives message from a contact form and sends an email 
  */
-exports.SendMailController = async (req, res) => {
+exports.SendMailController = (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
-    const msg = { name, email, subject, message };
-
-    const info = await sendMail(msg);
-
-    const data = {
-      response: info.response,
-      messageId: info.messageId,
-      rejected: info.rejected.length > 0 ? true : false,
-      accepted: info.accepted.length > 0 ? true : false,
-      messageSize: info.messageSize,
-      messageTime: info.messageTime,
-      envelopeTime: info.envelopeTime,
-      envelope: {
-        from: email,
-        to: "hey@felixavelar.com"
-      }
+    const data = { 
+      from: `${name} <${email}>`,
+      to: 'felixavco@gmail.com',
+      subject: `[Contact Form - felixavelar.com] ${subject}`
     }
 
-    res.status(200).json(data);
+    const template = `
+      <h3>${name} <${email}> </h3>
+      <hr/>
+      <p>${message}</p>
+    `;
+
+    Mailer(data, template);
+
+    res.status(200).json({message: "Sent", body: req.body});
 
   } catch (error) {
-    
+    res.status(500).json({Error: error.toString()})
   }
 };

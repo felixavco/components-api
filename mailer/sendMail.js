@@ -1,34 +1,14 @@
-const nodemailer = require('nodemailer');
-const { SMTP, SMTP_USER, SMTP_PWD, SMTP_PORT } = require('../config/keys');
+const MailGun = require('mailgun-js');
+const { MG_API_KEY } = require('../config/keys');
 
-const sendMail = (data) => {
-	const transporter = nodemailer.createTransport({
-		host: SMTP,
-		port: SMTP_PORT,
-		secure: SMTP_PORT === 465 ? true : false,
-		auth: {
-			user: SMTP_USER,
-			pass: SMTP_PWD
-		}
-	});
 
-	const template = `
-		<h4>${data.name} "${data.email}" </h4>
-		<p>${data.message}</p>
-	`
-	
+const Mailer = ({ from, to, subject }, template) => {
 
-	const email = {
-		from: `${data.name} <${data.email}>`,
-		to: 'hey@felixavelar.com',
-		bcc: 'felixavco@gmail.com',
-		replyTo: data.email,
-		subject: `[Contact Form] ${data.subject}`,
-		text: data.message,
-		html: template
-	};
+	const mailgun = MailGun({ apiKey: MG_API_KEY, domain: 'mail.felixavelar.com' });
+	const message = { from, to, subject, html: template }
+	mailgun.messages().send(message);
 
-	return transporter.sendMail(email);
-};
+}
 
-module.exports = sendMail;
+
+module.exports = Mailer;

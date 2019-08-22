@@ -16,5 +16,6 @@ const { SendMailController } = require('../controllers/adminController');
  */
 router.post('/send-mail', messageVal, SendMailController);
 
+
 module.exports = router;
 
